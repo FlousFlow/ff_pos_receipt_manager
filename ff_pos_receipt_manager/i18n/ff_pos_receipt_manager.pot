@@ -1,7 +1,7 @@
 # Translation template for Flous Flow POS Receipt Manager.
 msgid ""
 msgstr ""
-"Project-Id-Version: Flous Flow POS Receipt Manager 19.0.1.0.0\n"
+"Project-Id-Version: POS Receipt Manager 20.0.1.0.0\n"
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 

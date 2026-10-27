@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="pos_order_receipt_layout" inherit_id="point_of_sale.pos_order_receipt">
+        <xpath expr="//html[@id='pos-receipt']" position="attributes">
+            <attribute name="class">ff-pos-receipt</attribute>
+        </xpath>
+    </template>
+</odoo>

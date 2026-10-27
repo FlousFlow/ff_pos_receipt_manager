@@ -71,31 +71,16 @@ class PosConfig(models.Model):
 
     @api.model
     def _load_pos_data_fields(self, config):
-        # Odoo 19 Community's base ``pos.config`` model does not provide a
-        # concrete field list for the POS loader. Keep the list here explicit:
-        # it is the stable set consumed by the POS store and receipt renderer,
-        # while avoiding one2many/session history payloads.
+        # Odoo 20's base ``pos.config`` keeps the default loader list empty,
+        # which means read-all fields. Preserve that behavior while making
+        # these addon settings explicit for the POS relation metadata.
         fields_to_load = super()._load_pos_data_fields(config)
-        fields_to_load += [
-            "id", "name", "company_id", "currency_id", "journal_id", "invoice_journal_id",
-            "use_pricelist", "pricelist_id", "available_pricelist_ids", "payment_method_ids",
-            "fast_payment_method_ids", "fiscal_position_ids", "default_fiscal_position_id",
-            "iface_tax_included", "iface_print_auto", "iface_print_skip_screen", "iface_print_via_proxy",
-            "iface_printers", "iface_cashdrawer", "iface_electronic_scale", "iface_scan_via_proxy",
-            "iface_available_categ_ids", "limit_categories", "iface_group_by_categ", "show_category_images",
-            "show_product_images", "iface_big_scrollbars", "manual_discount", "restrict_price_control",
-            "cash_control", "cash_rounding", "only_round_cash_method", "rounding_method",
-            "basic_receipt", "receipt_header", "receipt_footer", "tip_product_id", "iface_tipproduct",
-            "ship_later", "use_presets", "available_preset_ids", "default_preset_id", "use_fast_payment",
-            "module_pos_hr", "module_pos_restaurant", "module_pos_discount", "module_pos_sms",
-            "module_pos_appointment", "module_pos_avatax", "is_posbox", "proxy_ip", "other_devices",
-            "epson_printer_ip", "printer_ids", "trusted_config_ids", "access_token", "uuid",
-        ]
+        if not fields_to_load:
+            fields_to_load = list(self._fields)
         fields_to_load += [
             "ff_receipt_manager_enabled", "ff_receipt_print_mode", "ff_receipt_paper_size",
             "ff_receipt_custom_width_mm", "ff_receipt_margin_left_mm", "ff_receipt_margin_right_mm",
             "ff_receipt_font_profile", "ff_receipt_printable_width_mm",
         ]
-        # Keep this compatible with optional POS addons that rename/remove a
-        # frontend-only convenience property (for example ``iface_printers``).
+        # Keep this compatible with optional POS addons that add/remove fields.
         return list(dict.fromkeys(field_name for field_name in fields_to_load if field_name in self._fields))
