@@ -1,6 +1,61 @@
-<section>
-    <h2>Flous Flow POS Receipt Manager</h2>
-    <img src="images/receipt_preview_screenshot.png" alt="POS receipt print preview" class="img img-responsive"/>
-    <p>Configure per-POS thermal receipt layout widths and browser print preparation while preserving Odoo's native receipt and printer pipeline.</p>
-    <p><strong>Important:</strong> browser and operating-system printer settings control physical paper size. This module does not provide Bluetooth, ESC/POS, cutting, or silent-print control.</p>
+<section class="container">
+    <h2>POS Receipt Manager</h2>
+    <p class="lead">
+        Prepare clean, configurable thermal-style receipts for Odoo 19 Community POS browser printing.
+        Configure each POS independently without replacing Odoo's native receipt, payment, or printer flow.
+    </p>
+
+    <img src="images/receipt_preview_screenshot.png"
+         alt="Odoo POS receipt print preview"
+         class="img img-responsive"/>
+
+    <h3>What this module provides</h3>
+    <ul>
+        <li>Per-POS receipt layout settings for different stores or counters.</li>
+        <li>Standard thermal widths: 58mm, 80mm, and 112mm.</li>
+        <li>Custom paper width from 40mm to 210mm.</li>
+        <li>Independent left and right margins with validation.</li>
+        <li>Small, normal, and large receipt font profiles.</li>
+        <li>Browser print page-size hints with a measured receipt height.</li>
+        <li>Arabic/RTL-safe receipt direction and normal text wrapping.</li>
+        <li>Native Odoo printer mode remains available as a fallback.</li>
+    </ul>
+
+    <h3>Configuration</h3>
+    <ol>
+        <li>Open <strong>Point of Sale &gt; Configuration &gt; Point of Sale</strong>.</li>
+        <li>Open the target POS configuration.</li>
+        <li>Open the <strong>Configuration</strong> tab and find <strong>POS Receipt Manager</strong>.</li>
+        <li>Enable the manager, select the paper width, margins, font profile, and printing method.</li>
+        <li>Reload the POS session after changing receipt settings.</li>
+    </ol>
+
+    <h3>Printing behavior</h3>
+    <p>
+        In browser mode, the module formats Odoo's native receipt and adds a CSS page-size hint for the
+        configured width. The browser print dialog and operating-system printer driver remain authoritative.
+        For reliable results, disable browser headers and footers and configure the same paper width in the
+        printer driver.
+    </p>
+
+    <h3>What is intentionally not included</h3>
+    <ul>
+        <li>No Bluetooth communication or Android bridge.</li>
+        <li>No ESC/POS transport, automatic cutting, or cash-drawer commands.</li>
+        <li>No silent printing or printer-driver configuration.</li>
+        <li>No replacement of Odoo payment, tax, stock, or accounting logic.</li>
+    </ul>
+
+    <h3>Compatibility and quality</h3>
+    <ul>
+        <li>Odoo 19 Community Edition only.</li>
+        <li>Depends only on the standard <strong>point_of_sale</strong> module.</li>
+        <li>Validated with Odoo installation, upgrade, ORM constraint, asset, and POS smoke tests.</li>
+        <li>Uninstall-safe presentation extension: native Odoo receipt behavior remains the fallback.</li>
+    </ul>
+
+    <p>
+        <strong>Important:</strong> CSS can prepare the browser output, but it cannot override a physical
+        printer driver's paper size or printable area. Test the final result with the intended printer model.
+    </p>
 </section>
