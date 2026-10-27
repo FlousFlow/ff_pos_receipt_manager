@@ -1,0 +1,39 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Flous Flow POS Receipt Manager 19.0.1.0.0\n"
+"Language: ar\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+msgid "Enable Receipt Manager"
+msgstr "تفعيل مدير الإيصالات"
+
+msgid "Printing Method"
+msgstr "طريقة الطباعة"
+
+msgid "Paper Width"
+msgstr "عرض الورق"
+
+msgid "Custom Width (mm)"
+msgstr "العرض المخصص (مم)"
+
+msgid "Left Margin (mm)"
+msgstr "الهامش الأيسر (مم)"
+
+msgid "Right Margin (mm)"
+msgstr "الهامش الأيمن (مم)"
+
+msgid "Font Profile"
+msgstr "نمط الخط"
+
+msgid "Printer Printable Width (mm)"
+msgstr "العرض القابل للطباعة (مم)"
+
+msgid "Receipt margins cannot be negative."
+msgstr "لا يمكن أن تكون هوامش الإيصال سالبة."
+
+msgid "Receipt margins must leave a positive content width."
+msgstr "يجب أن تترك هوامش الإيصال عرضًا موجبًا للمحتوى."
+
+msgid "Custom receipt width must be between 40mm and 210mm."
+msgstr "يجب أن يتراوح عرض الإيصال المخصص بين 40 و210 مم."

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_config_view_form_receipt_manager" model="ir.ui.view">
+        <field name="name">pos.config.form.receipt.manager</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='configuration']" position="inside">
+                <div class="row mt16 o_settings_container" groups="point_of_sale.group_pos_manager">
+                    <setting string="Flous Flow — Receipt Printing"
+                             help="Browser printing depends on printer and operating-system settings. Paper-size selection cannot be guaranteed by this addon.">
+                        <field name="ff_receipt_manager_enabled"/>
+                        <div class="content-group mt16" invisible="not ff_receipt_manager_enabled">
+                            <div class="row mb-2">
+                                <label class="col-lg-5 o_light_label" for="ff_receipt_print_mode">Printing Method</label>
+                                <div class="col-lg-7"><field name="ff_receipt_print_mode"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-lg-5 o_light_label" for="ff_receipt_paper_size">Paper Width</label>
+                                <div class="col-lg-7"><field name="ff_receipt_paper_size"/></div>
+                            </div>
+                            <div class="row mb-2" invisible="ff_receipt_paper_size != 'custom'">
+                                <label class="col-lg-5 o_light_label" for="ff_receipt_custom_width_mm">Custom Width</label>
+                                <div class="col-lg-7"><field name="ff_receipt_custom_width_mm"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-lg-5 o_light_label" for="ff_receipt_margin_left_mm">Left Margin</label>
+                                <div class="col-lg-7"><field name="ff_receipt_margin_left_mm"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-lg-5 o_light_label" for="ff_receipt_margin_right_mm">Right Margin</label>
+                                <div class="col-lg-7"><field name="ff_receipt_margin_right_mm"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-lg-5 o_light_label" for="ff_receipt_font_profile">Font Profile</label>
+                                <div class="col-lg-7"><field name="ff_receipt_font_profile"/></div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-lg-5 o_light_label" for="ff_receipt_printable_width_mm">Printer Printable Width</label>
+                                <div class="col-lg-7"><field name="ff_receipt_printable_width_mm"/></div>
+                            </div>
+                        </div>
+                    </setting>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

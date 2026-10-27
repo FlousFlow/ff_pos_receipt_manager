@@ -1,0 +1,30 @@
+# Translation template for Flous Flow POS Receipt Manager.
+msgid ""
+msgstr ""
+"Project-Id-Version: Flous Flow POS Receipt Manager 19.0.1.0.0\n"
+"Language: en\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Enable Receipt Manager"
+msgstr ""
+
+msgid "Printing Method"
+msgstr ""
+
+msgid "Paper Width"
+msgstr ""
+
+msgid "Custom Width (mm)"
+msgstr ""
+
+msgid "Left Margin (mm)"
+msgstr ""
+
+msgid "Right Margin (mm)"
+msgstr ""
+
+msgid "Font Profile"
+msgstr ""
+
+msgid "Printer Printable Width (mm)"
+msgstr ""
