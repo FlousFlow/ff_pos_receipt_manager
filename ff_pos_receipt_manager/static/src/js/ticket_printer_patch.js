@@ -26,11 +26,13 @@ patch(PosTicketPrinterPlugin.prototype, {
         const style = document.getElementById("ff-receipt-manager-print-style") || document.createElement("style");
         style.id = "ff-receipt-manager-print-style";
 
-        const buildPrintCss = (heightMm) => `
-            @page { size: ${layout.paperWidthMm}mm ${heightMm}mm; margin: 0; }
+        const buildPrintCss = (pageHeightMm) => `
+            ${pageHeightMm ? `@page { size: ${layout.paperWidthMm}mm ${pageHeightMm}mm; margin: 0; }` : ""}
             html, body {
                 width: ${layout.paperWidthMm}mm !important;
                 min-width: ${layout.paperWidthMm}mm !important;
+                height: auto !important;
+                min-height: 0 !important;
                 margin: 0 !important;
                 padding: 0 !important;
             }
@@ -40,6 +42,8 @@ patch(PosTicketPrinterPlugin.prototype, {
                 margin-left: ${layout.leftMarginMm}mm !important;
                 margin-right: ${layout.rightMarginMm}mm !important;
                 box-sizing: border-box !important;
+                height: auto !important;
+                min-height: 0 !important;
                 overflow: visible !important;
                 overflow-wrap: anywhere !important;
                 font-size: ${fontSizeMm}mm !important;
@@ -70,13 +74,25 @@ patch(PosTicketPrinterPlugin.prototype, {
             }
         `;
 
-        // Apply the thermal width first. Measuring before this reflow can retain
-        // the screen/A4 width and produce an oversized or clipped print job.
-        style.textContent = buildPrintCss(1000);
+        // Apply the thermal width without a temporary long page. A placeholder
+        // page height can be captured by Android's system print dialog before
+        // the final CSS update and produce an excessively long receipt.
+        style.textContent = buildPrintCss(null);
         if (!style.isConnected) {
             document.head.appendChild(style);
         }
-        const receiptHeight = Math.max(receipt.scrollHeight, receipt.getBoundingClientRect().height, 1);
+        // Reading layout dimensions forces the width and font changes to reflow
+        // before the height is measured.
+        void receipt.offsetWidth;
+        const body = document.body;
+        const bodyTop = body.getBoundingClientRect().top;
+        const contentBottoms = Array.from(body.children, (child) =>
+            child.getBoundingClientRect().bottom - bodyTop
+        );
+        // The receipt root is <html>; its own height can be the iframe viewport
+        // height. Measure its actual body content so empty space in the hidden
+        // print iframe does not become extra paper.
+        const receiptHeight = Math.max(...contentBottoms, 1);
         const heightMm = Math.max(40, Math.ceil((receiptHeight + 4) / pxPerMm));
         style.textContent = buildPrintCss(heightMm);
     },

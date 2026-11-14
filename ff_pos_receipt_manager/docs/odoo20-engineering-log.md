@@ -8,3 +8,9 @@
 - Boundary: the Android/system print service still converts and sends the print job; this addon cannot control its Bluetooth transfer speed. No physical printer or Android system print dialog was available for verification.
 - Validation: JavaScript syntax, manifest parsing, and `git diff --check` only; automated test suites were not run.
 - Deployment: pending backup, test database upgrade, and production upgrade.
+
+## 2026-11-14 — Remove temporary long page size (20.0.1.0.2)
+
+- Evidence: the previous print patch temporarily declared a 1000mm page while measuring content; Android can capture that size before the final style update.
+- Change: measure after thermal-width reflow using an automatic temporary page height, then set only the measured final page height.
+- Validation: pending static checks, test database upgrade, and physical system-print confirmation.
