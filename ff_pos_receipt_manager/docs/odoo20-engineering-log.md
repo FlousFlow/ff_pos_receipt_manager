@@ -4,6 +4,7 @@
 
 - Evidence: Odoo 20 renders the POS receipt as HTML in an iframe and calls the browser/system print path. The addon previously measured receipt height before applying the configured thermal width; its font profile was not applied in the print stylesheet.
 - Change: apply the configured width first, force layout, then measure page height; enforce thermal page dimensions, use the configured font profile, bound the receipt logo, and remove print-only shadows. Receipt content and business calculations are unchanged.
+- Upgrade compatibility: restored Odoo module/record references in the Arabic PO/POT catalogs; the upstream catalogs lacked module metadata and failed Odoo's translation importer during upgrade.
 - Boundary: the Android/system print service still converts and sends the print job; this addon cannot control its Bluetooth transfer speed. No physical printer or Android system print dialog was available for verification.
 - Validation: JavaScript syntax, manifest parsing, and `git diff --check` only; automated test suites were not run.
 - Deployment: pending backup, test database upgrade, and production upgrade.
