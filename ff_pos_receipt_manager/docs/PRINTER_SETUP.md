@@ -1,3 +1,3 @@
 # Printer setup
 
-Configure the same 58mm, 80mm, 112mm or custom width in the operating-system printer driver and in the POS configuration. Disable browser headers and footers and verify preview margins. The addon supplies a CSS page-size hint and an explicit measured page height to Chromium; the browser/driver can still override the physical paper size, especially for custom widths.
+Configure the same 58mm, 80mm, 112mm or custom width in the operating-system print service and in the POS configuration. Disable browser headers and footers and verify the preview uses the roll width. The addon applies the thermal width before measuring the final receipt height, then supplies both dimensions to the system print dialog. The Android/browser print service may still substitute a supported paper size or add processing time; that portion is outside Odoo.

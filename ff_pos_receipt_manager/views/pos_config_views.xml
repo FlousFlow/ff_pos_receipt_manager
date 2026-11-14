@@ -8,7 +8,7 @@
             <xpath expr="//notebook/page[@name='configuration']" position="inside">
                 <div class="row mt16 o_settings_container" groups="point_of_sale.group_pos_manager">
                     <setting string="Flous Flow — Receipt Printing"
-                             help="Browser printing depends on printer and operating-system settings. Paper-size selection cannot be guaranteed by this addon.">
+                             help="Formats the POS receipt as a compact thermal page. Select the same roll width in the device's system print settings.">
                         <field name="ff_receipt_manager_enabled"/>
                         <div class="content-group mt16" invisible="not ff_receipt_manager_enabled">
                             <div class="row mb-2">

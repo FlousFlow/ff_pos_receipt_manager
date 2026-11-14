@@ -1,6 +1,6 @@
 {
     "name": "POS Receipt Manager",
-    "version": "20.0.1.0.0",
+    "version": "20.0.1.0.1",
     "category": "Sales/Point of Sale",
     "summary": "Configurable thermal receipt formatting for Odoo POS",
     "description": "Prepare browser POS receipts for configurable thermal paper widths without claiming hardware printer control.",
