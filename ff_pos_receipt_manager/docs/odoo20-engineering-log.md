@@ -19,3 +19,9 @@
 - Verification: Odoo JS syntax, manifest, PO/POT checks passed. Android Gradle debug unit tests and APK build passed; APK signature matches v1.0.13 and v1.0.14 is published. The module upgrade passed on an isolated clone and production `brand_builders` now reports 20.0.1.3.7 installed; `odoo20` is active and login HTTP returned 200. Live POS browser interaction and physical printer output remain unverified because no cashier device or printer is connected here.
 - Boundary: a successful Bluetooth socket write is not a physical print acknowledgment. No printer sensor signal is available through the current ESC/POS contract.
 
+## 2026-11-22 - Remove blocked custom CORS header
+
+- Evidence: the Android 1.0.14 log shows `/pair` succeeded, then browser preflight requested `authorization,content-type,x-print-request-id`. The bridge allowed only `Authorization, Content-Type`; no `POST /print/raw` followed. The Odoo module already sends the same trace ID in the JSON `request_id` field, which the bridge accepts.
+- Change: removed the redundant `X-Print-Request-ID` header from both raw receipt POST paths. The shared trace ID stays in JSON, so the browser preflight only requests headers already allowed by Android. Bumped the module to 20.0.1.3.8.
+- Verification: pending module upgrade and new printer log confirming `POST /print/raw` follows the successful OPTIONS response.
+

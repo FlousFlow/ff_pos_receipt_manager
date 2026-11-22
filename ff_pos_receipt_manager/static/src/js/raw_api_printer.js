@@ -334,7 +334,6 @@ async function sendCanvasToRawApi(config, canvas, requestId) {
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-            "X-Print-Request-ID": requestId,
         },
         body: JSON.stringify({
             protocol: "ESC_POS",
@@ -457,7 +456,6 @@ async function postRawPayload(config, payload, requestId) {
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-            "X-Print-Request-ID": requestId,
         },
         body: JSON.stringify({ ...payload, printer_address: printerAddress, request_id: requestId }),
     });

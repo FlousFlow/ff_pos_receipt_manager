@@ -39,3 +39,12 @@ The original standalone workspace has no Odoo runtime, so the runtime evidence a
 | Production service smoke check | PASS | `odoo20` active; login endpoint returned HTTP 200 after restart |
 | Live POS browser trace and status polling | NOT EXECUTED | No authenticated cashier browser or Android device attached |
 | Physical Bluetooth/paper output | NOT EXECUTED | No printer device attached |
+
+## CORS print request fix (20.0.1.3.8)
+
+| Test | Result | Evidence |
+|---|---|---|
+| Odoo JavaScript syntax | PASS | Node module syntax check |
+| Trace ID remains in print JSON | PASS | `request_id` remains in body; custom `X-Print-Request-ID` header removed |
+| Android preflight compatibility | PASS by contract | Remaining `Authorization` and `Content-Type` headers are explicitly allowed by Print Bridge 1.0.14 |
+| Live phone/browser print | NOT EXECUTED | Requires cashier phone and paired printer |
