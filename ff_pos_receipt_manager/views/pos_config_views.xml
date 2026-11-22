@@ -15,6 +15,20 @@
                                 <label class="col-lg-5 o_light_label" for="ff_receipt_print_mode">Printing Method</label>
                                 <div class="col-lg-7"><field name="ff_receipt_print_mode"/></div>
                             </div>
+                            <div class="content-group mt16" invisible="ff_receipt_print_mode != 'raw_api'">
+                                <div class="row mb-2">
+                                    <label class="col-lg-5 o_light_label" for="ff_raw_api_url">FlousFlow API URL</label>
+                                    <div class="col-lg-7"><field name="ff_raw_api_url"/></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <label class="col-lg-5 o_light_label" for="ff_raw_api_token">Bearer Token</label>
+                                    <div class="col-lg-7"><field name="ff_raw_api_token" password="True"/></div>
+                                </div>
+                                <div class="row mb-2">
+                                    <label class="col-lg-5 o_light_label" for="ff_raw_printer_address">Bluetooth Address</label>
+                                    <div class="col-lg-7"><field name="ff_raw_printer_address"/></div>
+                                </div>
+                            </div>
                             <div class="row mb-2">
                                 <label class="col-lg-5 o_light_label" for="ff_receipt_paper_size">Paper Width</label>
                                 <div class="col-lg-7"><field name="ff_receipt_paper_size"/></div>

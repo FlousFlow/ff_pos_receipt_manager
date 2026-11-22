@@ -1,16 +1,21 @@
-# Odoo 20 Engineering Log
+# Odoo 20 engineering log
 
-## 2026-11-14 — Thermal system-print optimization (20.0.1.0.1)
+## 2026-11-17 — structured raw receipt payload
 
-- Evidence: Odoo 20 renders the POS receipt as HTML in an iframe and calls the browser/system print path. The addon previously measured receipt height before applying the configured thermal width; its font profile was not applied in the print stylesheet.
-- Change: apply the configured width first, force layout, then measure page height; enforce thermal page dimensions, use the configured font profile, bound the receipt logo, and remove print-only shadows. Receipt content and business calculations are unchanged.
-- Upgrade compatibility: restored Odoo module/record references in the Arabic PO/POT catalogs; the upstream catalogs lacked module metadata and failed Odoo's translation importer during upgrade.
-- Boundary: the Android/system print service still converts and sends the print job; this addon cannot control its Bluetooth transfer speed. No physical printer or Android system print dialog was available for verification.
-- Validation: JavaScript syntax, manifest parsing, and `git diff --check` only; automated test suites were not run.
-- Deployment: pending backup, test database upgrade, and production upgrade.
+- Problem: raw printing rasterized the complete receipt in the browser before sending ESC/POS bytes to Android; long orders produced large Bluetooth payloads.
+- Evidence: `raw_api_printer.js` used `generateImage()` and `canvasToEscPos()`; Android accepted `payload_base64` and forwarded it without interpreting receipt content.
+- Decision: add `ESC_POS_STRUCTURED`. Odoo sends normalized receipt lines and optional QR data. Android prints ASCII lines with resident ESC/POS text and renders only non-ASCII lines as raster strips using Android text layout. Keep raster fallback for older bridge builds.
+- Boundaries: physical print speed, Arabic appearance, and printer firmware behavior require a real RPP30 test. No fiscal fields are removed from the normalized order receipt path.
 
-## 2026-11-14 — Remove temporary long page size (20.0.1.0.2)
+## 2026-11-17 — direct Arabic ESC/POS mode
 
-- Evidence: the previous print patch temporarily declared a 1000mm page while measuring content; Android can capture that size before the final style update.
-- Change: measure after thermal-width reflow using an automatic temporary page height, then set only the measured final page height.
-- Validation: pending static checks, test database upgrade, and physical system-print confirmation.
+- User confirmed the connected XP-P323B prints Arabic normally. Updated the structured bridge path to emit all receipt lines as direct ESC/POS text with `ESC t 22` (Xprinter Arabic code page) and send the QR value through the native ESC/POS QR command. The Android bridge no longer rasterizes Arabic lines in this mode.
+- Physical verification remains required because code-page selection and RTL behavior are firmware settings on the attached printer.
+# 2026-11-22 - Shared POS printer trace ID
+
+- Module: `ff_pos_receipt_manager` 20.0.1.3.7 with FlousFlow Print 1.0.14.
+- Finding: Odoo generated no ID shared with the Android bridge; the app generated its own socket request ID, so a browser failure could not be matched directly to Bluetooth diagnostics.
+- Change: Odoo generates one trace ID per receipt attempt; sends it as a `/pair` query parameter and `request_id` JSON property on print requests; surfaces the ID and app stage. Android validates and reuses the supplied ID, returns it in JSON and response headers, logs it through Bluetooth completion/failure, and serves an authenticated in-memory status lookup that Odoo polls if the browser loses the print response. This preserves compatibility with older apps without adding a CORS request header.
+- Verification: Odoo JS syntax, manifest, PO/POT checks passed. Android Gradle debug unit tests and APK build passed; APK signature matches v1.0.13 and v1.0.14 is published. The module upgrade passed on an isolated clone and production `brand_builders` now reports 20.0.1.3.7 installed; `odoo20` is active and login HTTP returned 200. Live POS browser interaction and physical printer output remain unverified because no cashier device or printer is connected here.
+- Boundary: a successful Bluetooth socket write is not a physical print acknowledgment. No printer sensor signal is available through the current ESC/POS contract.
+

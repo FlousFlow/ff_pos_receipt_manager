@@ -12,8 +12,20 @@ class PosConfig(models.Model):
         help="Apply the configured receipt layout to POS receipt output.",
     )
     ff_receipt_print_mode = fields.Selection(
-        [("browser", "Browser Print"), ("native", "Native Odoo Printer")],
+        [("browser", "Browser Print"), ("native", "Native Odoo Printer"), ("raw_api", "FlousFlow ESC/POS API")],
         string="Printing Method", default="browser", required=True,
+    )
+    ff_raw_api_url = fields.Char(
+        string="FlousFlow API URL", default="http://127.0.0.1:8765/print/raw",
+        help="Loopback URL exposed by FlousFlow Print on the same Android device.",
+    )
+    ff_raw_api_token = fields.Char(
+        string="FlousFlow Bearer Token", copy=False,
+        help="Token displayed by the FlousFlow Print Android app.",
+    )
+    ff_raw_printer_address = fields.Char(
+        string="Bluetooth Printer Address",
+        help="Must match the printer address saved in FlousFlow Print.",
     )
     ff_receipt_paper_size = fields.Selection(
         [("58", "58mm"), ("80", "80mm"), ("112", "112mm"), ("custom", "Custom")],
@@ -71,16 +83,32 @@ class PosConfig(models.Model):
 
     @api.model
     def _load_pos_data_fields(self, config):
-        # Odoo 20's base ``pos.config`` keeps the default loader list empty,
-        # which means read-all fields. Preserve that behavior while making
-        # these addon settings explicit for the POS relation metadata.
+        # Odoo 19 Community's base ``pos.config`` model does not provide a
+        # concrete field list for the POS loader. Keep the list here explicit:
+        # it is the stable set consumed by the POS store and receipt renderer,
+        # while avoiding one2many/session history payloads.
         fields_to_load = super()._load_pos_data_fields(config)
-        if not fields_to_load:
-            fields_to_load = list(self._fields)
         fields_to_load += [
-            "ff_receipt_manager_enabled", "ff_receipt_print_mode", "ff_receipt_paper_size",
+            "id", "name", "company_id", "currency_id", "journal_id", "invoice_journal_id",
+            "use_pricelist", "pricelist_id", "available_pricelist_ids", "payment_method_ids",
+            "fast_payment_method_ids", "fiscal_position_ids", "default_fiscal_position_id",
+            "iface_tax_included", "iface_print_auto", "iface_print_skip_screen", "iface_print_via_proxy",
+            "iface_printers", "iface_cashdrawer", "iface_electronic_scale", "iface_scan_via_proxy",
+            "iface_available_categ_ids", "limit_categories", "iface_group_by_categ", "show_category_images",
+            "show_product_images", "iface_big_scrollbars", "manual_discount", "restrict_price_control",
+            "cash_control", "cash_rounding", "only_round_cash_method", "rounding_method",
+            "basic_receipt", "receipt_header", "receipt_footer", "tip_product_id", "iface_tipproduct",
+            "ship_later", "use_presets", "available_preset_ids", "default_preset_id", "use_fast_payment",
+            "module_pos_hr", "module_pos_restaurant", "module_pos_discount", "module_pos_sms",
+            "module_pos_appointment", "module_pos_avatax", "is_posbox", "proxy_ip", "other_devices",
+            "epson_printer_ip", "printer_ids", "trusted_config_ids", "access_token", "uuid",
+        ]
+        fields_to_load += [
+            "ff_receipt_manager_enabled", "ff_receipt_print_mode", "ff_raw_api_url",
+            "ff_raw_api_token", "ff_raw_printer_address", "ff_receipt_paper_size",
             "ff_receipt_custom_width_mm", "ff_receipt_margin_left_mm", "ff_receipt_margin_right_mm",
             "ff_receipt_font_profile", "ff_receipt_printable_width_mm",
         ]
-        # Keep this compatible with optional POS addons that add/remove fields.
+        # Keep this compatible with optional POS addons that rename/remove a
+        # frontend-only convenience property (for example ``iface_printers``).
         return list(dict.fromkeys(field_name for field_name in fields_to_load if field_name in self._fields))

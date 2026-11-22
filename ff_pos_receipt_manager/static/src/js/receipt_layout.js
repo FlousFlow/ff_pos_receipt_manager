@@ -22,7 +22,9 @@ export function normalizeReceiptSettings(config = {}) {
         : "normal";
     return {
         enabled: config.ff_receipt_manager_enabled !== false,
-        printMode: config.ff_receipt_print_mode === "native" ? "native" : "browser",
+        printMode: ["native", "raw_api"].includes(config.ff_receipt_print_mode)
+            ? config.ff_receipt_print_mode
+            : "browser",
         paperWidthMm: safePaper,
         leftMarginMm: left,
         rightMarginMm: right,

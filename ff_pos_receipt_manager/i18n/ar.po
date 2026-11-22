@@ -213,3 +213,68 @@ msgstr "الهامش الأيمن (مم)"
 #: model:ir.model.fields.selection,name:ff_pos_receipt_manager.selection__pos_config__ff_receipt_font_profile__small
 msgid "Small"
 msgstr ""
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "Odoo could not reach FlousFlow Print. Tap Allow printer access below, then retry the receipt."
+msgstr "تعذر على أودو الوصول إلى FlousFlow Print. اضغط «السماح بالوصول للطابعة» أدناه، ثم أعد طباعة الإيصال."
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "Allow printer access"
+msgstr "السماح بالوصول للطابعة"
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "Site access is ready. Tap Retry receipt to print this receipt."
+msgstr "تم السماح للموقع بالوصول. اضغط «إعادة طباعة الإيصال» لطباعة هذا الإيصال."
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "Retry receipt"
+msgstr "إعادة طباعة الإيصال"
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "Local printer access is still blocked. Allow local network access for this Odoo site in browser settings, then tap Allow printer access again."
+msgstr "ما زال الوصول المحلي للطابعة محظورًا. اسمح لموقع Odoo بالوصول للشبكة المحلية من إعدادات المتصفح، ثم اضغط «السماح بالوصول للطابعة» مرة أخرى."
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "Diagnostic ID:"
+msgstr "رقم تتبع الطباعة:"
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "Stage:"
+msgstr "المرحلة:"
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "Bluetooth data write completed. Paper output is not confirmed by the app."
+msgstr "اكتمل إرسال بيانات الطباعة عبر البلوتوث. التطبيق لا يستطيع تأكيد خروج الورق فعليًا."
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "The print app did not return a status for this attempt."
+msgstr "تطبيق الطباعة لم يُرجع حالة لهذه المحاولة."
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "App stage:"
+msgstr "مرحلة التطبيق:"
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "bytes:"
+msgstr "بايت:"
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "The print request did not reach the Android print app."
+msgstr "طلب الطباعة لم يصل إلى تطبيق Android."
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "The app pairing succeeded, but this print request did not reach it."
+msgstr "تم ربط الموقع بالتطبيق، لكن طلب الطباعة نفسه لم يصل إليه."

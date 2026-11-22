@@ -1,0 +1,38 @@
+.ff-pos-receipt {
+    width: var(--ff-receipt-content-width);
+    max-width: var(--ff-receipt-content-width);
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    font-size: var(--ff-receipt-font-size);
+    margin-left: var(--ff-receipt-margin-left);
+    margin-right: var(--ff-receipt-margin-right);
+    direction: auto;
+
+    img#posqrcode {
+        width: 32mm;
+        height: 32mm;
+        object-fit: contain;
+    }
+
+    .pos-receipt-right-align { white-space: nowrap; }
+    .font-monospace { font-variant-numeric: tabular-nums; }
+}
+
+@media print {
+    // Named pages let Chromium use the configured thermal width instead of
+    // falling back to the workstation's Letter/A4 default.
+    @page ff-receipt-58 { margin: 0; size: 58mm auto; }
+    @page ff-receipt-80 { margin: 0; size: 80mm auto; }
+    @page ff-receipt-112 { margin: 0; size: 112mm auto; }
+
+    .ff-pos-receipt {
+        margin-left: var(--ff-receipt-margin-left);
+        margin-right: var(--ff-receipt-margin-right);
+        page-break-inside: auto;
+    }
+
+    .ff-pos-receipt--paper-58 { page: ff-receipt-58; }
+    .ff-pos-receipt--paper-80 { page: ff-receipt-80; }
+    .ff-pos-receipt--paper-112 { page: ff-receipt-112; }
+}
