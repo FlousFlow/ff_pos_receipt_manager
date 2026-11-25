@@ -236,6 +236,20 @@ async function readRawPrintStatus(config, requestId) {
 }
 
 function notifyRawApiFailure(notification, config, error, retryAction, requestId) {
+    if (error instanceof TypeError && /Android/i.test(navigator.userAgent)) {
+        notification.add(`${_t("Open POS from FlousFlow Print to print without browser network permissions.")} ${diagnosticIdLabel(requestId)}`, {
+            type: "danger",
+            sticky: true,
+            buttons: [{
+                name: _t("Open POS in FlousFlow Print"),
+                primary: true,
+                onClick: () => {
+                    window.location.href = "flousflowprint://open-pos";
+                },
+            }],
+        });
+        return;
+    }
     if (!(error instanceof TypeError)) {
         const detail = error.message || directPrintFailureMessage(error);
         notification.add(`${detail} ${diagnosticStageLabel(error.stage)} ${diagnosticIdLabel(requestId)}`, { type: "danger", sticky: true });
@@ -299,22 +313,6 @@ function notifyRawApiFailure(notification, config, error, retryAction, requestId
 }
 
 async function sendCanvasToRawApi(config, canvas, requestId) {
-    const apiUrl = rawApiUrl(config);
-    let token = config.ff_raw_api_token;
-    let printerAddress = config.ff_raw_printer_address;
-    if (!token || !printerAddress) {
-        const pairUrl = apiUrl.replace(/\/print\/raw(?:\?.*)?$/, "/pair");
-        const pairRequestUrl = `${pairUrl}${pairUrl.includes("?") ? "&" : "?"}request_id=${encodeURIComponent(requestId)}`;
-        const pairResponse = await fetch(pairRequestUrl, { mode: "cors", targetAddressSpace: "loopback" });
-        const pair = await pairResponse.json().catch(() => ({}));
-        if (!pairResponse.ok || !pair.success || !pair.token || !pair.printer_address) {
-            throw bridgeResponseError(pair, pairResponse.status, requestId);
-        }
-        token = pair.token;
-        printerAddress = pair.printer_address;
-        config.ff_raw_api_token = token;
-        config.ff_raw_printer_address = printerAddress;
-    }
     const widthDots = Number(config.ff_receipt_paper_size) === 58 ? 384 : 576;
     const { payload, rasterWidthDots } = canvasToEscPos(canvas, widthDots);
     const uncompressedRasterBytes = Math.ceil(widthDots / 8) * Math.max(1, Math.round(canvas.height * widthDots / canvas.width));
@@ -327,25 +325,10 @@ async function sendCanvasToRawApi(config, canvas, requestId) {
         savedBytes: Math.max(0, uncompressedRasterBytes - payload.length),
         encoding: "ESC/POS raster with blank-line feed compression",
     });
-    const response = await fetch(apiUrl, {
-        method: "POST",
-        mode: "cors",
-        targetAddressSpace: "loopback",
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            protocol: "ESC_POS",
-            printer_address: printerAddress,
-            request_id: requestId,
-            payload_base64: base64(payload),
-        }),
-    });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok || !result.success) {
-        throw bridgeResponseError(result, response.status, requestId);
-    }
+    const result = await postRawPayload(config, {
+        protocol: "ESC_POS",
+        payload_base64: base64(payload),
+    }, requestId);
     console.info("FlousFlow direct print accepted", {
         requestId,
         appRequestId: result.request_id,
@@ -435,6 +418,29 @@ async function structuredReceiptFromData(data, config) {
 }
 
 async function postRawPayload(config, payload, requestId) {
+    const nativeBridge = globalThis.FlousFlowPrint;
+    if (nativeBridge && typeof nativeBridge.printRaw === "function") {
+        let result;
+        try {
+            result = JSON.parse(nativeBridge.printRaw(requestId, JSON.stringify(payload)));
+        } catch (cause) {
+            const error = new Error(cause?.message || _t("The native print bridge failed."));
+            error.code = "native_bridge_failed";
+            error.stage = "native_bridge";
+            error.requestId = requestId;
+            throw error;
+        }
+        if (!result.success) {
+            throw bridgeResponseError(result, result.status || 502, requestId);
+        }
+        console.info("FlousFlow native print bridge completed", {
+            requestId,
+            stage: result.stage,
+            bytes: result.bytes_sent,
+            elapsedMs: result.elapsed_ms,
+        });
+        return result;
+    }
     const apiUrl = rawApiUrl(config);
     let token = config.ff_raw_api_token;
     let printerAddress = config.ff_raw_printer_address;

@@ -278,3 +278,13 @@ msgstr "طلب الطباعة لم يصل إلى تطبيق Android."
 #: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
 msgid "The app pairing succeeded, but this print request did not reach it."
 msgstr "تم ربط الموقع بالتطبيق، لكن طلب الطباعة نفسه لم يصل إليه."
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "Open POS from FlousFlow Print to print without browser network permissions."
+msgstr "افتح نقطة البيع من تطبيق FlousFlow Print للطباعة دون ضبط أذونات المتصفح."
+
+#. module: ff_pos_receipt_manager
+#: code:addons/ff_pos_receipt_manager/static/src/js/raw_api_printer.js:0
+msgid "Open POS in FlousFlow Print"
+msgstr "فتح نقطة البيع في FlousFlow Print"

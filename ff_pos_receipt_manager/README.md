@@ -9,3 +9,5 @@ Each direct print attempt receives a diagnostic ID. Odoo sends it with pairing a
 Install with `./odoo-bin -d <database> -i ff_pos_receipt_manager --stop-after-init` and update with `-u ff_pos_receipt_manager` from the Odoo 20 checkout.
 
 The addon targets Odoo 20 Community. Physical printer paper, cutting, Bluetooth connection state and actual paper-completion time still require validation on the target printer.
+
+On Android, open Odoo POS from the FlousFlow Print app. Its trusted WebView native bridge forwards receipt payloads to the app's local print service, avoiding the browser's Local Network Access permission prompt. Android browsers outside the app show a one-tap action to open the POS in FlousFlow Print. Desktop browsers retain the existing loopback API path.
