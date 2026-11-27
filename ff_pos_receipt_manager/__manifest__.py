@@ -1,6 +1,6 @@
 {
     "name": "POS Receipt Manager",
-    "version": "20.0.1.3.9",
+    "version": "20.0.1.3.10",
     "category": "Sales/Point of Sale",
     "summary": "Configurable thermal receipt formatting for Odoo POS",
     "description": "Prepare browser POS receipts for configurable thermal paper widths without claiming hardware printer control.",
@@ -18,10 +18,8 @@
     "assets": {
         "point_of_sale._assets_pos": [
             "ff_pos_receipt_manager/static/src/js/receipt_layout.js",
-            "ff_pos_receipt_manager/static/src/js/order_receipt_patch.js",
             "ff_pos_receipt_manager/static/src/js/ticket_printer_patch.js",
             "ff_pos_receipt_manager/static/src/js/raw_api_printer.js",
-            "ff_pos_receipt_manager/static/src/xml/order_receipt.xml",
             "ff_pos_receipt_manager/static/src/scss/receipt.scss",
         ],
         "web.assets_unit_tests": [
